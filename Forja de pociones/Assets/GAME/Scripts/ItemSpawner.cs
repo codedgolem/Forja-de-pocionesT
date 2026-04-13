@@ -12,6 +12,7 @@ public class ItemSpawner : MonoBehaviour
     public List<Transform> puntosAleatorios;
     public GameObject itemPrefab;
 
+
     private List<int> usedIndex = new List<int>();
     private int index = -1;
 

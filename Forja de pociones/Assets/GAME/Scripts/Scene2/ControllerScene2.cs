@@ -1,10 +1,14 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ControllerScene2 : MonoBehaviour
 {
     public ItemSpawner spawner;
+    public GameObject panel;
+    public GameObject panelFin;
+    public GameObject portal;
 
     [Header("Totales")]
     public TextMeshProUGUI totalHongo;
@@ -24,6 +28,9 @@ public class ControllerScene2 : MonoBehaviour
     public TextMeshProUGUI conseguidoSemillas;
     public TextMeshProUGUI conseguidoOjos;
 
+
+    private bool goalCompleted = false;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -33,7 +40,17 @@ public class ControllerScene2 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        amountConseguido();
+        if (!goalCompleted)
+        {
+            amountConseguido();
+        }
+       
+    }
+
+    public void closePanel()
+    {
+        panel.SetActive(false);
+        panelFin.SetActive(false);
     }
 
 
@@ -141,7 +158,7 @@ public class ControllerScene2 : MonoBehaviour
             switch (item.nombre)
             {
                 case "Hongo Brillante":
-                    GameManager.Instance.CollectedItems.TryGetValue(GameDataLoader.instance.IngredientesList.Find(i => i.nombre.Equals("Hongo Brillante")), out int cantidadHongo);
+                    GameManager.Instance.CollectedItems.TryGetValue(GameDataLoader.instance.IngredientesList.Find(i => i.nombre.Equals("Hongo Brillante")), out int cantidadHongo);            
                     conseguidoHongo.text = cantidadHongo.ToString();
                     break;
                 case "Hoja de Sombra":
@@ -169,6 +186,24 @@ public class ControllerScene2 : MonoBehaviour
                     conseguidoOjos.text = cantidadOjos.ToString();     
                     break;
             }
+            completeGoal();
+        }
+    }
+
+    public void completeGoal()
+    {
+            if (totalHongo.text.Equals(conseguidoHongo.text) &&
+                totalHojaSombra.text.Equals(conseguidoHojaSombra.text) &&
+                totalCalabaza.text.Equals(conseguidoCalabaza.text) &&
+                totalUva.text.Equals(conseguidoUva.text) &&
+                totalHojaBruja.text.Equals(conseguidoHojaBruja.text) &&
+                totalSemillas.text.Equals(conseguidoSemillas.text) &&
+                totalOjos.text.Equals(conseguidoOjos.text))
+            {
+                Debug.Log("¡Objetivo completado!");
+                panelFin.SetActive(true);
+                portal.SetActive(true);
+                goalCompleted = true;
         }
     }
 }
