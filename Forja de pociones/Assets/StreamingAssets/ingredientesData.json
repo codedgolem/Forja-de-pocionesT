@@ -1,0 +1,39 @@
+{
+  "ingredientes": [
+    {
+      "nombre": "Hongo Brillante",
+      "valor": 2,
+      "iconoId": "44"
+    },
+    {
+      "nombre": "Hoja de Sombra",
+      "valor": 1,
+      "iconoId": "1"
+    },
+    {
+      "nombre": "Calabaza",
+      "valor": 1,
+      "iconoId": "9"
+    },
+    {
+      "nombre": "Uva",
+      "valor": 2,
+      "iconoId": "32"
+    },
+    {
+      "nombre": "Hoja de bruja",
+      "valor": 1,
+      "iconoId": "42"
+    },
+    {
+      "nombre": "Semillas de gigante",
+      "valor": 1,
+      "iconoId": "10"
+    },
+    {
+      "nombre": "Fruta de ojos",
+      "valor": 1,
+      "iconoId": "48"
+    }
+  ]
+}
