@@ -57,5 +57,10 @@ public class GameManager : MonoBehaviour
         UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
     }
 
+    public void ExitGame()
+    {
+        Debug.Log("Exiting game...");
+        Application.Quit();
+    }
 
 }
