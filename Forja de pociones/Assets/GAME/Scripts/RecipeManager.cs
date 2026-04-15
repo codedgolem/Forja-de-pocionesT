@@ -3,32 +3,10 @@ using TMPro;
 using System.Collections.Generic;
 using System.IO;
 
-
-[System.Serializable]
-public class RequisitoJSON
-{
-    public string ingrediente;
-    public int cantidad;
-}
-
-[System.Serializable]
-public class RecetaJSON
-{
-    public string nombre;
-    public List<RequisitoJSON> ingredientesRequeridos;
-    public string efecto;
-}
-
-[System.Serializable]
-public class ContenedorRecetas
-{
-    public List<RecetaJSON> recetas;
-}
-
 public class RecipeManager : MonoBehaviour
 {
     [Header("Configuración del Archivo")]
-    public string nombreArchivoJson = "recetas.json";
+    public string nombreArchivoJson = "DatosJuego.json"; // Asegúrate que este nombre sea igual al de tu amiga
 
     [Header("Referencias UI")]
     public TextMeshProUGUI textoReceta;
@@ -38,9 +16,9 @@ public class RecipeManager : MonoBehaviour
 
     [Header("Ventana de Victoria")]
     public GameObject panelDeAlerta;
-    public TextMeshProUGUI textoDeAlerta;
 
-    private ContenedorRecetas misDatos;
+    // Usamos el nuevo contenedor que tiene Ingredientes y Recetas juntos
+    private ContenedorUnificado misDatos;
     private int indiceRecetaActual = 0;
     private Dictionary<string, int> ingredientesCaldero = new Dictionary<string, int>();
 
@@ -50,7 +28,7 @@ public class RecipeManager : MonoBehaviour
 
         CargarJson();
 
-        // Si cargó algo, inicializamos la UI
+        // Verificamos que misDatos no sea nulo y que tenga recetas
         if (misDatos != null && misDatos.recetas != null && misDatos.recetas.Count > 0)
         {
             ActualizarMenuDesplegable();
@@ -65,25 +43,13 @@ public class RecipeManager : MonoBehaviour
         if (File.Exists(ruta))
         {
             string contenido = File.ReadAllText(ruta);
-
-            
-            //Debug.Log("Contenido bruto del archivo: " + contenido);
-
-            misDatos = JsonUtility.FromJson<ContenedorRecetas>(contenido);
-
-        //    if (misDatos == null || misDatos.recetas == null || misDatos.recetas.Count == 0)
-        //    {
-        //        Debug.LogError("¡ERROR! El JSON se leyó pero la lista de recetas está VACÍA. Revisa que el nombre 'recetas' en el JSON coincida con el código.");
-        //    }
-        //    else
-        //    {
-        //        Debug.Log("<color=green>¡ÉXITO!</color> Se cargaron " + misDatos.recetas.Count + " recetas.");
-        //    }
-        //}
-        //else
-        //{
-        //    Debug.LogError("¡ARCHIVO NO ENCONTRADO! No existe nada en: " + ruta);
-         }
+            // Ahora leemos usando ContenedorUnificado
+            misDatos = JsonUtility.FromJson<ContenedorUnificado>(contenido);
+        }
+        else
+        {
+            Debug.LogError("¡ARCHIVO NO ENCONTRADO! en: " + ruta);
+        }
     }
 
     public void ActualizarInterfaz()
@@ -91,23 +57,27 @@ public class RecipeManager : MonoBehaviour
         if (misDatos == null || misDatos.recetas == null || indiceRecetaActual >= misDatos.recetas.Count) return;
 
         RecetaJSON receta = misDatos.recetas[indiceRecetaActual];
-        string texto = "Poción actual: \n" + receta.nombre + "\n\n";
+
+        string texto = "<b>POCIÓN ACTUAL:</b> \n" + receta.nombre + "\n\n";
         texto += "<b>Necesitas:</b>\n";
+
         foreach (var req in receta.ingredientesRequeridos)
         {
-            texto += "- " + req.ingrediente + ": " + req.cantidad + "\n";
+            
+            texto += "- " + req.nombre + ": " + req.cantidad + "\n";
         }
-        texto += "\n<i>Efecto: " + receta.efecto + "</i>";
+
+        texto += "\n<i>Dificultad: " + receta.dificultad + "</i>";
         textoReceta.text = texto;
 
-        // Inventario del GameManager
+        // Mostrar lo que tienes en el inventario
         textoInventario.text = "<b>Tu Morral:</b>\n";
         foreach (var item in GameManager.Instance.CollectedItems)
         {
             textoInventario.text += item.Key.nombre + ": x" + item.Value + "\n";
         }
 
-        // Caldero
+        // Mostrar lo que tiene el caldero
         textoCaldero.text = "<b>En el Caldero:</b>\n";
         foreach (var item in ingredientesCaldero)
         {
@@ -126,14 +96,12 @@ public class RecipeManager : MonoBehaviour
         }
 
         if (nombres.Count > 0) menuDesplegable.AddOptions(nombres);
-        else menuDesplegable.AddOptions(new List<string> { "Morral Vacío" });
+        else menuDesplegable.AddOptions(new List<string> { "Inventario Vacío" });
     }
-
-    // --- LÓGICA DE BOTONES (Añadir, Borrar, Preparar) ---
 
     public void BotonAñadir()
     {
-        if (menuDesplegable.options.Count == 0 || menuDesplegable.options[0].text == "Morral Vacío") return;
+        if (menuDesplegable.options.Count == 0 || menuDesplegable.options[0].text == "Inventario Vacío") return;
 
         string seleccionado = menuDesplegable.options[menuDesplegable.value].text;
         ingredientes data = null;
@@ -146,6 +114,7 @@ public class RecipeManager : MonoBehaviour
         if (data != null && GameManager.Instance.CollectedItems[data] > 0)
         {
             GameManager.Instance.CollectedItems[data]--;
+
             if (ingredientesCaldero.ContainsKey(seleccionado)) ingredientesCaldero[seleccionado]++;
             else ingredientesCaldero.Add(seleccionado, 1);
 
@@ -174,23 +143,25 @@ public class RecipeManager : MonoBehaviour
 
         RecetaJSON receta = misDatos.recetas[indiceRecetaActual];
 
-        // Validar que no haya ingredientes extra
+        // 1. Validar que no haya ingredientes que NO pertenecen a la receta
         foreach (var item in ingredientesCaldero)
         {
             bool esDeReceta = false;
             foreach (var req in receta.ingredientesRequeridos)
-                if (item.Key == req.ingrediente) esDeReceta = true;
-            if (!esDeReceta) return;
+            {
+                if (item.Key == req.nombre) esDeReceta = true;
+            }
+            if (!esDeReceta) return; // Si hay algo extra, no se prepara
         }
 
-        // Validar cantidades exactas
+        // 2. Validar que las cantidades sean EXACTAS
         foreach (var req in receta.ingredientesRequeridos)
         {
-            int enOlla = ingredientesCaldero.ContainsKey(req.ingrediente) ? ingredientesCaldero[req.ingrediente] : 0;
-            if (enOlla != req.cantidad) return;
+            int enOlla = ingredientesCaldero.ContainsKey(req.nombre) ? ingredientesCaldero[req.nombre] : 0;
+            if (enOlla != req.cantidad) return; // Si falta o sobra, no se prepara
         }
 
-     
+        // ÉXITO: Limpiamos caldero y pasamos a la siguiente poción
         ingredientesCaldero.Clear();
         indiceRecetaActual++;
 

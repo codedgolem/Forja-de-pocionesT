@@ -862,13 +862,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cabea5be3c4f876469c86be25cb301eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RecipeManager
-  nombreArchivoJson: recetas.json
+  nombreArchivoJson: ingredientesData.json
   textoReceta: {fileID: 1561955497}
   textoInventario: {fileID: 168828427}
   textoCaldero: {fileID: 871656416}
   menuDesplegable: {fileID: 1013100039}
   panelDeAlerta: {fileID: 932263068}
-  textoDeAlerta: {fileID: 1834952652}
 --- !u!4 &216711512
 Transform:
   m_ObjectHideFlags: 0
@@ -1074,7 +1073,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -23.118, y: -231.925}
+  m_AnchoredPosition: {x: -0.000032425, y: -231.97}
   m_SizeDelta: {x: 206.237, y: 38.669}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &469622127
@@ -1236,8 +1235,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 14
-  m_fontSizeBase: 14
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1837,8 +1836,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.87706, y: 15.64}
-  m_SizeDelta: {x: 650.9, y: 252.692}
+  m_AnchoredPosition: {x: -0.000024796, y: 15.64}
+  m_SizeDelta: {x: 619.9137, y: 252.692}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &871656415
 CanvasRenderer:
@@ -2149,7 +2148,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.00012207031, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -894.184, y: -502.628}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &932263070
@@ -2292,8 +2291,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000027299, y: -158}
-  m_SizeDelta: {x: 577.327, y: 44.388}
+  m_AnchoredPosition: {x: -0.000027299, y: -148.2204}
+  m_SizeDelta: {x: 577.327, y: 63.9472}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1013100041
 MonoBehaviour:

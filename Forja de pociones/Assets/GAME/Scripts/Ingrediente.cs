@@ -1,33 +1,45 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class ItemS
+[Serializable]
+public class ItemS 
 {
     public string nombre;
     public int cantidad;
-} // <--- Faltaba esta llave
+}
+ 
 
-[System.Serializable]
-public class IngredienteJSON
+[Serializable]
+public class Ingrediente
 {
     public string nombre;
     public int valor;
     public string iconoId;
 }
 
-[System.Serializable]
-public class RecetaIngrediente
+
+[Serializable]
+public class RequisitoJSON
 {
     public string nombre;
     public int cantidad;
 }
 
-[System.Serializable]
-public class RecetaData
+
+[Serializable]
+public class RecetaJSON
 {
     public string nombre;
     public string dificultad;
     public string descripcion;
-    public List<RecetaIngrediente> ingredientesRequeridos;
+    public List<RequisitoJSON> ingredientesRequeridos;
+}
+
+
+[Serializable]
+public class ContenedorUnificado
+{
+    public List<Ingrediente> ingredientes;
+    public List<RecetaJSON> recetas;
 }

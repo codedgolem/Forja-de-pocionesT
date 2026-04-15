@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ItemRecolectable : MonoBehaviour
 {
-    public IngredienteSO objScript; 
+    public ingredientes objScript; 
     public AudioClip clip;
 
     private void OnTriggerEnter2D(Collider2D collision)

@@ -1,88 +1,77 @@
-using NUnit.Framework;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-
+// Esta clase ayuda a leer el JSON
+[System.Serializable]
 public class ingredientesListWrapper
 {
     public List<Ingrediente> ingredientes;
 }
-[TestFixture]
+
 public class GameDataLoader : MonoBehaviour
 {
-
-    public static GameDataLoader instance;
+    // Solo una Instance para evitar el error CS0117
+    public static GameDataLoader Instance;
 
     private List<ingredientes> ingredientesList = new List<ingredientes>();
+    public List<ingredientes> IngredientesList { get => ingredientesList; set => ingredientesList = value; }
+
     private List<Ingrediente> classIngrediente = new List<Ingrediente>();
 
-
-    
-
-
-    public List<ingredientes> IngredientesList { get => ingredientesList; set => ingredientesList = value; }
-    public List<Ingrediente> ClassIngrediente { get => classIngrediente; set => classIngrediente = value; }
-
-
-    
-
-    
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
-        
-    }
-
-    private void Awake()
-    {
-        if (instance != null && instance != this)
+        // Singleton limpio: solo uno puede existir
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+            loadIngredientes();
+        }
+        else
         {
             Destroy(gameObject);
-            return;
         }
-        instance = this;
-        DontDestroyOnLoad(gameObject);
-        loadIngredientes();
-
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void loadIngredientes()
     {
+        // Asegúrate de que el nombre del archivo sea el correcto (ingredientesData.json)
+        string path = Path.Combine(Application.streamingAssetsPath, "ingredientesData.json");
 
-        string path = Application.streamingAssetsPath + "/ingredientesData.json";
-
-        string jsonString = File.ReadAllText(path);
-        classIngrediente = JsonUtility.FromJson<ingredientesListWrapper>(jsonString).ingredientes;
-
-        foreach (var ingrediente in classIngrediente)
+        if (!File.Exists(path))
         {
-            ingredientes newIngrediente = ScriptableObject.CreateInstance<ingredientes>();
-            newIngrediente.nombre = ingrediente.nombre;
-            newIngrediente.valor = ingrediente.valor;
-            newIngrediente.iconId = ingrediente.iconoId;
-
-            string tipoTexto = ingrediente.nombre.Replace(" ", "");
-            newIngrediente.ingrediente = (ingredientes.TipoIngrediente)System.Enum.Parse(typeof(ingredientes.TipoIngrediente), tipoTexto);
-            ingredientesList.Add(newIngrediente);
+            Debug.LogError("No se encontró el JSON en: " + path);
+            return;
         }
 
-        //Debug.Log("Ingredientes cargados: " + ingredientesList.Count);
-        //Debug.Log("Primer ingrediente: " + ingredientesList[0].nombre);
-        //Debug.Log("Primer ingrediente enum: " + ingredientesList[0].ingrediente);
-        //Debug.Log("Primer ingrediente valor: " + ingredientesList[0].valor);
-        //Debug.Log("Primer ingrediente iconId: " + ingredientesList[0].iconId);
-        //Debug.Log("Clase ingredeingte: " + classIngrediente.Count);
+        string jsonString = File.ReadAllText(path);
+        var wrapper = JsonUtility.FromJson<ingredientesListWrapper>(jsonString);
 
+        if (wrapper != null && wrapper.ingredientes != null)
+        {
+            classIngrediente = wrapper.ingredientes;
+            ingredientesList.Clear();
 
+            foreach (var item in classIngrediente)
+            {
+                ingredientes newIng = ScriptableObject.CreateInstance<ingredientes>();
+                newIng.nombre = item.nombre;
+                newIng.valor = item.valor;
+                newIng.iconId = item.iconoId;
+
+                // Quita espacios para el Enum (ej: "Hongo Brillante" -> "HongoBrillante")
+                string tipoTexto = item.nombre.Replace(" ", "");
+                try
+                {
+                    newIng.ingrediente = (ingredientes.TipoIngrediente)System.Enum.Parse(typeof(ingredientes.TipoIngrediente), tipoTexto);
+                    ingredientesList.Add(newIng);
+                }
+                catch
+                {
+                    Debug.LogWarning("No se pudo parsear el tipo: " + tipoTexto);
+                }
+            }
+        }
     }
-
 }

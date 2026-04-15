@@ -4,7 +4,7 @@ using UnityEngine;
 public class ItemSpawner : MonoBehaviour
 {
     [Header("Configuración")]
-    public List<ItemS> ItemS;
+    public List<ItemS> ItemS; // Esta es la lista de estructuras que definimos en Ingrediente.cs
     public List<Transform> puntosAleatorios;
     public GameObject itemPrefab;
 
@@ -12,8 +12,8 @@ public class ItemSpawner : MonoBehaviour
 
     void Start()
     {
-        
-        Invoke("SpawnItem", 0.1f);
+        // Un pequeño delay para asegurar que el GameDataLoader ya leyó el JSON
+        Invoke("SpawnItem", 0.5f);
     }
 
     public void SpawnItem()
@@ -34,10 +34,15 @@ public class ItemSpawner : MonoBehaviour
         if (usedIndex.Count >= puntosAleatorios.Count) return;
 
         int index;
+        int intentos = 0; // Seguridad para evitar bucles infinitos
+
         do
         {
             index = Random.Range(0, puntosAleatorios.Count);
-        } while (usedIndex.Contains(index));
+            intentos++;
+        } while (usedIndex.Contains(index) && intentos < 100);
+
+        if (usedIndex.Contains(index)) return; // Si no encontró punto libre, sale
 
         usedIndex.Add(index);
 
@@ -46,12 +51,45 @@ public class ItemSpawner : MonoBehaviour
 
         if (recolectable != null)
         {
-            IngredienteSO data = GameDataLoader.instance.IngredientesList.Find(ing => ing.nombre == config.nombre);
-            if (data != null)
+            // Usamos 'Instance' (con I mayúscula) para conectar con el script de Esteban
+            if (GameDataLoader.Instance != null && GameDataLoader.Instance.IngredientesList != null)
             {
-                recolectable.objScript = data;
-                Sprite spriteIcono = Resources.Load<Sprite>("IngredientesIcon/" + data.iconId);
-                if (spriteIcono != null) newObj.GetComponent<SpriteRenderer>().sprite = spriteIcono;
+                ingredientes data = GameDataLoader.Instance.IngredientesList.Find(ing => ing.nombre == config.nombre);
+
+                if (data != null)
+                {
+                    recolectable.objScript = data;
+
+                    // --- SOLUCIÓN AL ERROR DE LA LÍNEA 55 ---
+                    // Buscamos el componente SpriteRenderer con seguridad
+                    SpriteRenderer sRenderer = newObj.GetComponent<SpriteRenderer>();
+
+                    // Si no está en el padre, lo buscamos en los hijos (por si acaso)
+                    if (sRenderer == null) sRenderer = newObj.GetComponentInChildren<SpriteRenderer>();
+
+                    if (sRenderer != null)
+                    {
+                        // Cargamos el sprite usando el iconId que viene del JSON
+                        Sprite spriteIcono = Resources.Load<Sprite>("IngredientesIcon/" + data.iconId);
+                        if (spriteIcono != null)
+                        {
+                            sRenderer.sprite = spriteIcono;
+                        }
+                        else
+                        {
+                            Debug.LogWarning("No se encontró el sprite en Resources/IngredientesIcon/ para el ID: " + data.iconId);
+                        }
+                    }
+                    else
+                    {
+                        // Si llegamos aquí, el Prefab que pusiste en el Inspector no tiene forma de mostrar imagen
+                        Debug.LogError("¡ERROR! El prefab '" + itemPrefab.name + "' no tiene un SpriteRenderer.");
+                    }
+                }
+                else
+                {
+                    Debug.LogWarning("No se encontró la data en el JSON para el ingrediente: " + config.nombre);
+                }
             }
         }
     }
