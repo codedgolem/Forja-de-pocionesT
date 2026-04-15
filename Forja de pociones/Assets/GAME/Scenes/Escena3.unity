@@ -3244,7 +3244,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 216711511}
         m_TargetAssemblyTypeName: RecipeManager, Assembly-CSharp
-        m_MethodName: BotonInicio
+        m_MethodName: CerrarPanelError
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
