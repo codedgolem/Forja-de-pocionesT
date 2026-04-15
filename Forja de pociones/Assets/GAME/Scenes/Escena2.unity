@@ -2203,7 +2203,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1770317872}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ControllerScene2, Assembly-CSharp
         m_MethodName: closePanel
         m_Mode: 1
@@ -14158,7 +14158,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0f729e4ed7b54b41ae2473c0aec8b14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  panelInformacion: {fileID: 0}
 --- !u!4 &1343145616
 Transform:
   m_ObjectHideFlags: 0
@@ -14903,7 +14902,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1471212084}
-  - component: {fileID: 1471212083}
+  - component: {fileID: 1471212085}
   m_Layer: 0
   m_Name: ---GameDataLoader---
   m_TagString: Untagged
@@ -14911,18 +14910,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1471212083
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1471212082}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 486fc8d13b39c344fb2bca8ab96c1fbd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GameDataLoader
 --- !u!4 &1471212084
 Transform:
   m_ObjectHideFlags: 0
@@ -14938,6 +14925,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1471212085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471212082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 486fc8d13b39c344fb2bca8ab96c1fbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameDataLoader
 --- !u!1 &1486577042
 GameObject:
   m_ObjectHideFlags: 0
@@ -15465,7 +15464,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1770317873}
-  - component: {fileID: 1770317872}
+  - component: {fileID: 1770317874}
   m_Layer: 0
   m_Name: ---ControllerScene2---
   m_TagString: Untagged
@@ -15473,36 +15472,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1770317872
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1770317871}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb69c1fc193fb484a96f4b25e44854fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ControllerScene2
-  spawner: {fileID: 111107356}
-  panel: {fileID: 2016439471}
-  panelFin: {fileID: 1211195327}
-  portal: {fileID: 81018670}
-  totalHongo: {fileID: 41627583}
-  totalHojaSombra: {fileID: 762190594}
-  totalCalabaza: {fileID: 1090740017}
-  totalUva: {fileID: 179861911}
-  totalHojaBruja: {fileID: 1965187913}
-  totalSemillas: {fileID: 1957801109}
-  totalOjos: {fileID: 3215600}
-  conseguidoHongo: {fileID: 1048792078}
-  conseguidoHojaSombra: {fileID: 1486577044}
-  conseguidoCalabaza: {fileID: 138345326}
-  conseguidoUva: {fileID: 1365619397}
-  conseguidoHojaBruja: {fileID: 2107419260}
-  conseguidoSemillas: {fileID: 309321156}
-  conseguidoOjos: {fileID: 2125477143}
 --- !u!4 &1770317873
 Transform:
   m_ObjectHideFlags: 0
@@ -15518,6 +15487,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1770317874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1770317871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb69c1fc193fb484a96f4b25e44854fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ControllerScene2
+  spawner: {fileID: 111107356}
+  panelFin: {fileID: 0}
+  portal: {fileID: 0}
+  itemPrefab: {fileID: 7833053576555771597, guid: ce018fe8529407341bfeecad876eae51, type: 3}
+  contenedorUI: {fileID: 1508097467}
 --- !u!1 &1811370291
 GameObject:
   m_ObjectHideFlags: 0
@@ -15632,7 +15618,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1770317872}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ControllerScene2, Assembly-CSharp
         m_MethodName: closePanel
         m_Mode: 1

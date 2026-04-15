@@ -7,12 +7,18 @@ public class RecipeManager : MonoBehaviour
     public bool PuedePreparar(RecetaData receta)
     {
         
-        Dictionary<ingredientes, int> inventario = GameManager.Instance.CollectedItems;
+        Dictionary<IngredienteSO, int> inventario = GameManager.Instance.CollectedItems;
+
+        if (receta.ingredientesRequeridos == null || receta.ingredientesRequeridos.Count == 0)
+        {
+            Debug.LogWarning($"La receta {receta.nombre} no tiene ingredientes definidos.");
+            return false;
+        }
 
         foreach (var requisito in receta.ingredientesRequeridos)
         {
-           
-            ingredientes dataIngrediente = GameDataLoader.instance.IngredientesList.Find(i => i.nombre == requisito.nombre);
+            
+            IngredienteSO dataIngrediente = GameDataLoader.instance.IngredientesList.Find(i => i.nombre == requisito.nombre);
 
             if (dataIngrediente != null)
             {
@@ -21,24 +27,24 @@ public class RecipeManager : MonoBehaviour
                 {
                     if (cantidadPoseida < requisito.cantidad)
                     {
-                        Debug.Log($"Faltan ingredientes para {receta.nombre}: {requisito.nombre} ({cantidadPoseida}/{requisito.cantidad})");
+                        Debug.Log($"Faltan ingredientes para {receta.nombre}: {requisito.nombre} (Tienes: {cantidadPoseida} / Necesitas: {requisito.cantidad})");
                         return false;
                     }
                 }
                 else
                 {
-                    Debug.Log($"No tienes el ingrediente {requisito.nombre} en el inventario.");
+                    Debug.Log($"No tienes el ingrediente {requisito.nombre} en el inventario (0/{requisito.cantidad}).");
                     return false;
                 }
             }
             else
             {
-                Debug.LogWarning($"El ingrediente {requisito.nombre} de la receta no existe en la base de datos.");
+                Debug.LogError($"El ingrediente '{requisito.nombre}' requerido por la receta '{receta.nombre}' no existe en el GameDataLoader.");
                 return false;
             }
         }
 
-        Debug.Log($"¡Tienes todos los ingredientes para: {receta.nombre}!");
+        Debug.Log($"¡Éxito! Tienes todos los ingredientes para preparar: {receta.nombre}");
         return true;
     }
 }
