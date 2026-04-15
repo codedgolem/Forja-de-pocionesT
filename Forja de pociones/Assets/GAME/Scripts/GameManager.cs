@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
 
     public Dictionary<ingredientes, int> CollectedItems { get => collectedItems; set => collectedItems = value; }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    
     void Start()
     {
         
@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
         
@@ -46,10 +46,7 @@ public class GameManager : MonoBehaviour
             Debug.Log($"Updated {data.nombre} count to {collectedItems[data]}");
         }
 
-        //foreach (var item in collectedItems)
-        //{
-        //    Debug.Log($"Item: {item.Key.nombre}, Count: {item.Value}");
-        //}
+       
     }
 
     public void LoadScene(string sceneName)
