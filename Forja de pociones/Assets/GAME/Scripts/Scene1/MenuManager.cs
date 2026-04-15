@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class MenuManager : MonoBehaviour
 {
-    [Header("Texto entre comillas y parentesis")]
+    [Header("Panel")]
     public GameObject panelInstrucciones;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

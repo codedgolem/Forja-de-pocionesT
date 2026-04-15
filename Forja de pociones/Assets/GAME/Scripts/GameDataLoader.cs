@@ -8,8 +8,7 @@ public class ingredientesListWrapper
 {
     public List<Ingrediente> ingredientes;
 }
-
-
+[TestFixture]
 public class GameDataLoader : MonoBehaviour
 {
 
@@ -18,9 +17,18 @@ public class GameDataLoader : MonoBehaviour
     private List<ingredientes> ingredientesList = new List<ingredientes>();
     private List<Ingrediente> classIngrediente = new List<Ingrediente>();
 
+
+    
+
+
     public List<ingredientes> IngredientesList { get => ingredientesList; set => ingredientesList = value; }
     public List<Ingrediente> ClassIngrediente { get => classIngrediente; set => classIngrediente = value; }
 
+
+    
+
+    
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -37,6 +45,8 @@ public class GameDataLoader : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(gameObject);
         loadIngredientes();
+
+        
     }
 
     // Update is called once per frame
@@ -74,4 +84,5 @@ public class GameDataLoader : MonoBehaviour
 
 
     }
+
 }
