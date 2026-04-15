@@ -35,5 +35,111 @@
       "valor": 1,
       "iconoId": "48"
     }
+  ],
+
+  "recetas": [
+    {
+      "nombre": "Infusión Simple de Bosque",
+      "dificultad": "Muy Fácil",
+      "descripcion": "Una mezcla básica para aprendices.",
+      "ingredientesRequeridos": [
+        {
+          "nombre": "Hongo Brillante",
+          "cantidad": 2
+        },
+        {
+          "nombre": "Uva",
+          "cantidad": 1
+        }
+      ]
+    },
+    {
+      "nombre": "Elixir de la Bruja Novata",
+      "dificultad": "Fácil",
+      "descripcion": "Requiere un manejo básico de hierbas mágicas.",
+      "ingredientesRequeridos": [
+        {
+          "nombre": "Hoja de bruja",
+          "cantidad": 3
+        },
+        {
+          "nombre": "Calabaza",
+          "cantidad": 1
+        },
+        {
+          "nombre": "Hongo Brillante",
+          "cantidad": 1
+        }
+      ]
+    },
+    {
+      "nombre": "Esencia de Sombras",
+      "dificultad": "Media",
+      "descripcion": "Una combinación equilibrada de ingredientes oscuros.",
+      "ingredientesRequeridos": [
+        {
+          "nombre": "Hoja de Sombra",
+          "cantidad": 2
+        },
+        {
+          "nombre": "Fruta de ojos",
+          "cantidad": 2
+        },
+        {
+          "nombre": "Semillas de gigante",
+          "cantidad": 1
+        }
+      ]
+    },
+    {
+      "nombre": "Tónico de Crecimiento Arcano",
+      "dificultad": "Difícil",
+      "descripcion": "Utiliza componentes pesados y difíciles de procesar.",
+      "ingredientesRequeridos": [
+        {
+          "nombre": "Semillas de gigante",
+          "cantidad": 3
+        },
+        {
+          "nombre": "Uva",
+          "cantidad": 1
+        },
+        {
+          "nombre": "Hoja de bruja",
+          "cantidad": 1
+        },
+        {
+          "nombre": "Hongo Brillante",
+          "cantidad": 2
+        }
+      ]
+    },
+    {
+      "nombre": "Brebaje del Observador Eterno",
+      "dificultad": "Experto",
+      "descripcion": "La receta más compleja, requiere recolectar casi todo tipo de espécimen.",
+      "ingredientesRequeridos": [
+        {
+          "nombre": "Fruta de ojos",
+          "cantidad": 1
+        },
+        {
+          "nombre": "Hoja de Sombra",
+          "cantidad": 3
+        },
+        {
+          "nombre": "Hoja de bruja",
+          "cantidad": 1
+        },
+        {
+          "nombre": "Calabaza",
+          "cantidad": 2
+        },
+        {
+          "nombre": "Hongo Brillante",
+          "cantidad": 1
+        }
+      ]
+    }
   ]
 }

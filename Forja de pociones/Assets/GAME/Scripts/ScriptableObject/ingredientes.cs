@@ -1,14 +1,9 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "ingredientes", menuName = "Scriptable Objects/ingredientes")]
+[CreateAssetMenu(fileName = "NuevoIngrediente", menuName = "Scriptable Objects/Ingrediente")]
 public class ingredientes : ScriptableObject
 {
-    public string nombre;
-    public int valor;
-    public string iconId;
-    public TipoIngrediente ingrediente;
-
-
+    // Categorías basadas en tu lista
     public enum TipoIngrediente
     {
         HongoBrillante,
@@ -17,7 +12,16 @@ public class ingredientes : ScriptableObject
         Uva,
         Hojadebruja,
         Semillasdegigante,
-        Frutadeojos
+        Frutadeojos,
+        Especial,
     }
 
+    [Header("Configuración del JSON")]
+    public string nombre; // "Hongo Brillante", "Uva", etc.
+    public int valor;
+    public string iconId;
+
+    [Header("Clasificación para el Juego")]
+    // Esta es la variable que el GameDataLoader está buscando (Error CS1061)
+    public TipoIngrediente ingrediente;
 }
