@@ -3,7 +3,7 @@ using TMPro;
 using System.Collections.Generic;
 using System.IO;
 
-// --- CLASES DE DATOS (Fuera de la clase principal para evitar errores) ---
+
 [System.Serializable]
 public class RequisitoJSON
 {
@@ -66,25 +66,24 @@ public class RecipeManager : MonoBehaviour
         {
             string contenido = File.ReadAllText(ruta);
 
-            // --- MENSAJE DE DEPURACIÓN CRÍTICO ---
-            // Esto nos dirá qué está leyendo Unity realmente
-            Debug.Log("Contenido bruto del archivo: " + contenido);
+            
+            //Debug.Log("Contenido bruto del archivo: " + contenido);
 
             misDatos = JsonUtility.FromJson<ContenedorRecetas>(contenido);
 
-            if (misDatos == null || misDatos.recetas == null || misDatos.recetas.Count == 0)
-            {
-                Debug.LogError("¡ERROR! El JSON se leyó pero la lista de recetas está VACÍA. Revisa que el nombre 'recetas' en el JSON coincida con el código.");
-            }
-            else
-            {
-                Debug.Log("<color=green>¡ÉXITO!</color> Se cargaron " + misDatos.recetas.Count + " recetas.");
-            }
-        }
-        else
-        {
-            Debug.LogError("¡ARCHIVO NO ENCONTRADO! No existe nada en: " + ruta);
-        }
+        //    if (misDatos == null || misDatos.recetas == null || misDatos.recetas.Count == 0)
+        //    {
+        //        Debug.LogError("¡ERROR! El JSON se leyó pero la lista de recetas está VACÍA. Revisa que el nombre 'recetas' en el JSON coincida con el código.");
+        //    }
+        //    else
+        //    {
+        //        Debug.Log("<color=green>¡ÉXITO!</color> Se cargaron " + misDatos.recetas.Count + " recetas.");
+        //    }
+        //}
+        //else
+        //{
+        //    Debug.LogError("¡ARCHIVO NO ENCONTRADO! No existe nada en: " + ruta);
+         }
     }
 
     public void ActualizarInterfaz()
@@ -92,12 +91,13 @@ public class RecipeManager : MonoBehaviour
         if (misDatos == null || misDatos.recetas == null || indiceRecetaActual >= misDatos.recetas.Count) return;
 
         RecetaJSON receta = misDatos.recetas[indiceRecetaActual];
-        string texto = "<color=yellow>POCIÓN ACTUAL:</color>\n" + receta.nombre + "\n\n";
+        string texto = "Poción actual: \n" + receta.nombre + "\n\n";
         texto += "<b>Necesitas:</b>\n";
         foreach (var req in receta.ingredientesRequeridos)
         {
             texto += "- " + req.ingrediente + ": " + req.cantidad + "\n";
         }
+        texto += "\n<i>Efecto: " + receta.efecto + "</i>";
         textoReceta.text = texto;
 
         // Inventario del GameManager
@@ -190,13 +190,13 @@ public class RecipeManager : MonoBehaviour
             if (enOlla != req.cantidad) return;
         }
 
-        // ÉXITO
+     
         ingredientesCaldero.Clear();
         indiceRecetaActual++;
 
         if (indiceRecetaActual >= misDatos.recetas.Count)
         {
-            textoReceta.text = "¡CURSO COMPLETADO!";
+            textoReceta.text = "¡Victoria!";
             if (panelDeAlerta != null) panelDeAlerta.SetActive(true);
         }
         else
