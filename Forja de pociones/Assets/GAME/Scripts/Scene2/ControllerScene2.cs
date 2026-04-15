@@ -1,209 +1,89 @@
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class ControllerScene2 : MonoBehaviour
 {
     public ItemSpawner spawner;
-    public GameObject panel;
     public GameObject panelFin;
     public GameObject portal;
 
-    [Header("Totales")]
-    public TextMeshProUGUI totalHongo;
-    public TextMeshProUGUI totalHojaSombra;
-    public TextMeshProUGUI totalCalabaza;
-    public TextMeshProUGUI totalUva;
-    public TextMeshProUGUI totalHojaBruja;
-    public TextMeshProUGUI totalSemillas;
-    public TextMeshProUGUI totalOjos;
+    [Header("Interfaz")]
+    public GameObject itemPrefab;
+    public Transform contenedorUI;
 
-    [Header("Conseguidos")]
-    public TextMeshProUGUI conseguidoHongo;
-    public TextMeshProUGUI conseguidoHojaSombra;
-    public TextMeshProUGUI conseguidoCalabaza;
-    public TextMeshProUGUI conseguidoUva;
-    public TextMeshProUGUI conseguidoHojaBruja;
-    public TextMeshProUGUI conseguidoSemillas;
-    public TextMeshProUGUI conseguidoOjos;
-
-
+    private Dictionary<string, TextMeshProUGUI> textosCantidades = new Dictionary<string, TextMeshProUGUI>();
+    private Dictionary<string, int> objetivosRecoleccion = new Dictionary<string, int>();
     private bool goalCompleted = false;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        amountTotal();
+        if (panelFin) panelFin.SetActive(false);
+        if (portal) portal.SetActive(false);
+        Invoke("GenerarInterfaz", 0.2f); // Esperar a que los datos carguen
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (!goalCompleted)
         {
-            amountConseguido();
+            ActualizarUI();
+            VerificarObjetivos();
         }
-       
     }
 
-    public void closePanel()
+    void GenerarInterfaz()
     {
-        panel.SetActive(false);
-        panelFin.SetActive(false);
-    }
+        foreach (Transform child in contenedorUI) Destroy(child.gameObject);
 
-
-    public void amountTotal()
-    {
-        foreach(var item in spawner.ItemS)
+        foreach (var data in GameDataLoader.instance.IngredientesList)
         {
-            
-            switch (item.nombre)
+            GameObject fila = Instantiate(itemPrefab, contenedorUI);
+            InventoryItemUI uiScript = fila.GetComponent<InventoryItemUI>();
+
+            Sprite icono = Resources.Load<Sprite>("IngredientesIcon/" + data.iconId);
+            uiScript.SetData(data.nombre, 0, icono);
+
+            if (!textosCantidades.ContainsKey(data.nombre))
+                textosCantidades.Add(data.nombre, uiScript.cantidadTexto);
+
+            var config = spawner.ItemS.Find(x => x.nombre == data.nombre);
+            if (config != null && !objetivosRecoleccion.ContainsKey(data.nombre))
+                objetivosRecoleccion.Add(data.nombre, config.cantidad);
+        }
+    }
+
+    void ActualizarUI()
+    {
+        foreach (var item in GameManager.Instance.CollectedItems)
+        {
+            if (textosCantidades.ContainsKey(item.Key.nombre))
             {
-                case "Hongo Brillante":
-                    
-                    foreach (var ingrediente in GameDataLoader.instance.IngredientesList)
-                    {
-                        if (ingrediente.nombre.Equals(item.nombre))
-                        {
-                            totalHongo.text = (item.cantidad * ingrediente.valor).ToString();
-                            break;
-                        }
-                      
-                    }   
-                    break;
-                case "Hoja de Sombra":
-                    foreach (var ingrediente in GameDataLoader.instance.IngredientesList)
-                    {
-                        if (ingrediente.nombre.Equals(item.nombre))
-                        {
-                            totalHojaSombra.text = (item.cantidad * ingrediente.valor).ToString();
-                            break;
-                        }
-                    
-                    }
-                    break;
-                case "Calabaza":
-                    foreach (var ingrediente in GameDataLoader.instance.IngredientesList)
-                    {
-                        if (ingrediente.nombre.Equals(item.nombre))
-                        {
-                            totalCalabaza.text = (item.cantidad * ingrediente.valor).ToString();
-                            break;
-                        }
-                       
-                    }
-                   
-                    break;
-                case "Uva":
-                    
-                    foreach (var ingrediente in GameDataLoader.instance.IngredientesList)
-                    {
-                        if (ingrediente.nombre.Equals(item.nombre))
-                        {
-                            totalUva.text = (item.cantidad * ingrediente.valor).ToString();
-                            break;
-                        }
-                       
-                        
-                    }
-                    
-                    break;
-                case "Hoja de bruja":
-                    foreach (var ingrediente in GameDataLoader.instance.IngredientesList)
-                    {
-                        if (ingrediente.nombre.Equals(item.nombre))
-                        {
-                            totalHojaBruja.text = (item.cantidad * ingrediente.valor).ToString();
-                            break;
-                        }
-                        
-                    }
-                    
-                    break;
-                case "Semillas de gigante":
-                    foreach (var ingrediente in GameDataLoader.instance.IngredientesList)
-                    {
-                        if (ingrediente.nombre.Equals(item.nombre))
-                        {
-                            totalSemillas.text = (item.cantidad * ingrediente.valor).ToString();
-                            break;
-                        }
-                      
-                    }
-                   
-                    break;
-                case "Fruta de ojos":
-                    foreach (var ingrediente in GameDataLoader.instance.IngredientesList)
-                    {
-                        if (ingrediente.nombre.Equals(item.nombre))
-                        {
-                            totalOjos.text = (item.cantidad * ingrediente.valor).ToString();
-                            break;
-                        }
-                      
-                    }
-                  
-                    break;
+                int objetivo = objetivosRecoleccion.ContainsKey(item.Key.nombre) ? objetivosRecoleccion[item.Key.nombre] : 0;
+                textosCantidades[item.Key.nombre].text = $"{item.Value} / {objetivo}";
             }
         }
-
     }
 
-    public void amountConseguido()
+    public void VerificarObjetivos()
     {
-        foreach (var item in spawner.ItemS)
+        if (objetivosRecoleccion.Count == 0) return;
+
+        bool todos = true;
+        foreach (var obj in objetivosRecoleccion)
         {
-            switch (item.nombre)
-            {
-                case "Hongo Brillante":
-                    GameManager.Instance.CollectedItems.TryGetValue(GameDataLoader.instance.IngredientesList.Find(i => i.nombre.Equals("Hongo Brillante")), out int cantidadHongo);            
-                    conseguidoHongo.text = cantidadHongo.ToString();
-                    break;
-                case "Hoja de Sombra":
-                    GameManager.Instance.CollectedItems.TryGetValue(GameDataLoader.instance.IngredientesList.Find(i => i.nombre.Equals("Hoja de Sombra")), out int cantidadHojaSombra);
-                    conseguidoHojaSombra.text = cantidadHojaSombra.ToString();
-                    break;
-                case "Calabaza":
-                    GameManager.Instance.CollectedItems.TryGetValue(GameDataLoader.instance.IngredientesList.Find(i => i.nombre.Equals("Calabaza")), out int cantidadCalabaza);
-                    conseguidoCalabaza.text = cantidadCalabaza.ToString();
-                    break;
-                case "Uva":
-                    GameManager.Instance.CollectedItems.TryGetValue(GameDataLoader.instance.IngredientesList.Find(i => i.nombre.Equals("Uva")), out int cantidadUva);
-                    conseguidoUva.text = cantidadUva.ToString();
-                    break;
-                case "Hoja de bruja":   
-                    GameManager.Instance.CollectedItems.TryGetValue(GameDataLoader.instance.IngredientesList.Find(i => i.nombre.Equals("Hoja de bruja")), out int cantidadHojaBruja);
-                    conseguidoHojaBruja.text = cantidadHojaBruja.ToString();
-                    break;
-                case "Semillas de gigante":
-                    GameManager.Instance.CollectedItems.TryGetValue(GameDataLoader.instance.IngredientesList.Find(i => i.nombre.Equals("Semillas de gigante")), out int cantidadSemillas);
-                    conseguidoSemillas.text = cantidadSemillas.ToString(); 
-                    break;
-                case "Fruta de ojos":           
-                    GameManager.Instance.CollectedItems.TryGetValue(GameDataLoader.instance.IngredientesList.Find(i => i.nombre.Equals("Fruta de ojos")), out int cantidadOjos);
-                    conseguidoOjos.text = cantidadOjos.ToString();     
-                    break;
-            }
-            completeGoal();
-        }
-    }
+            IngredienteSO info = GameDataLoader.instance.IngredientesList.Find(i => i.nombre == obj.Key);
+            int actual = 0;
+            if (info != null) GameManager.Instance.CollectedItems.TryGetValue(info, out actual);
 
-    public void completeGoal()
-    {
-            if (totalHongo.text.Equals(conseguidoHongo.text) &&
-                totalHojaSombra.text.Equals(conseguidoHojaSombra.text) &&
-                totalCalabaza.text.Equals(conseguidoCalabaza.text) &&
-                totalUva.text.Equals(conseguidoUva.text) &&
-                totalHojaBruja.text.Equals(conseguidoHojaBruja.text) &&
-                totalSemillas.text.Equals(conseguidoSemillas.text) &&
-                totalOjos.text.Equals(conseguidoOjos.text))
-            {
-                Debug.Log("¡Objetivo completado!");
-                panelFin.SetActive(true);
-                portal.SetActive(true);
-                goalCompleted = true;
+            if (actual < obj.Value) { todos = false; break; }
+        }
+
+        if (todos)
+        {
+            goalCompleted = true;
+            if (panelFin) panelFin.SetActive(true);
+            if (portal) portal.SetActive(true);
         }
     }
 }

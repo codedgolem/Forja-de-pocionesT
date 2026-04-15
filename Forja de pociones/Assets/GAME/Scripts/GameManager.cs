@@ -1,61 +1,29 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-
     public static GameManager Instance;
-    private Dictionary<ingredientes, int> collectedItems = new Dictionary<ingredientes, int>();
-
-    public Dictionary<ingredientes, int> CollectedItems { get => collectedItems; set => collectedItems = value; }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    private Dictionary<IngredienteSO, int> collectedItems = new Dictionary<IngredienteSO, int>();
+    public Dictionary<IngredienteSO, int> CollectedItems { get => collectedItems; }
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
+        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void actualizarData(IngredienteSO data)
     {
-        
-    }
-
-    public void actualizarData(ingredientes data)
-    {
-        if(collectedItems.TryGetValue(data, out int currentCount))
-        {
-            collectedItems[data] = currentCount + data.valor;
-            Debug.Log($"Updated {data.nombre} count to {collectedItems[data]}");
-        }
+        if (collectedItems.TryGetValue(data, out int count))
+            collectedItems[data] = count + data.valor;
         else
-        {
             collectedItems[data] = data.valor;
-            Debug.Log($"Updated {data.nombre} count to {collectedItems[data]}");
-        }
 
-        //foreach (var item in collectedItems)
-        //{
-        //    Debug.Log($"Item: {item.Key.nombre}, Count: {item.Value}");
-        //}
+        Debug.Log($"Inventario: {data.nombre} total = {collectedItems[data]}");
     }
 
-    public void LoadScene(string sceneName)
-    {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
-    }
-
-
+    public void LoadScene(string sceneName) => SceneManager.LoadScene(sceneName);
 }
