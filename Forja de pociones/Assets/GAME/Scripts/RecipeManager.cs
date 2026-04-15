@@ -20,6 +20,7 @@ public class RecipeManager : MonoBehaviour
 
     [Header("Ventana de Victoria")]
     public GameObject panelDeAlerta;
+    public GameObject panelNext;
 
     // Usamos el nuevo contenedor que tiene Ingredientes y Recetas juntos
     private ContenedorUnificado misDatos;
@@ -200,6 +201,7 @@ public class RecipeManager : MonoBehaviour
         }
         else
         {
+            if (panelNext != null) panelNext.SetActive(true);
             ActualizarMenuDesplegable();
             ActualizarInterfaz();
         }
@@ -217,6 +219,11 @@ public class RecipeManager : MonoBehaviour
     public void CerrarPanelError()
     {
         if (panelErrores != null) panelErrores.SetActive(false);
+    }
+
+    public void CerrarPanelNext()
+    {
+        if (panelNext != null) panelNext.SetActive(false);
     }
 
     public void BotonInicio() { GameManager.Instance.LoadScene("Escena1"); }
