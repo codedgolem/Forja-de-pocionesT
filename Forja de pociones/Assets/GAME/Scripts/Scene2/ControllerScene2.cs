@@ -39,7 +39,7 @@ public class ControllerScene2 : MonoBehaviour
         foreach (var data in GameDataLoader.instance.IngredientesList)
         {
             GameObject fila = Instantiate(itemPrefab, contenedorUI);
-            InventoryItemUI uiScript = fila.GetComponent<InventoryItemUI>();
+            Inventory uiScript = fila.GetComponent<Inventory>();
 
             Sprite icono = Resources.Load<Sprite>("IngredientesIcon/" + data.iconId);
             uiScript.SetData(data.nombre, 0, icono);
