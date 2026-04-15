@@ -1,7 +1,7 @@
 {
   "recetas": [
     {
-      "nombre": "Poción de invisibilidad",
+      "nombre": "Pociï¿½n de invisibilidad",
       "ingredientesRequeridos": [
         {
           "ingrediente": "Hongo Brillante",
@@ -12,10 +12,10 @@
           "cantidad": 1
         }
       ],
-      "efecto": "Te hace invisible por un corto período de tiempo."
+      "efecto": "Te hace invisible por un corto perï¿½odo de tiempo."
     },
     {
-      "nombre": "Poción de fuerza",
+      "nombre": "Pociï¿½n de fuerza",
       "ingredientesRequeridos": [
         {
           "ingrediente": "Calabaza",
@@ -26,10 +26,10 @@
           "cantidad": 2
         }
       ],
-      "efecto": "Aumenta tu fuerza durante un breve período."
+      "efecto": "Aumenta tu fuerza durante un breve perï¿½odo."
     },
     {
-      "nombre": "Poción de visión nocturna",
+      "nombre": "Pociï¿½n de visiï¿½n nocturna",
       "ingredientesRequeridos": [
         {
           "ingrediente": "Hoja de bruja",
@@ -43,7 +43,7 @@
       "efecto": "Permite ver en la oscuridad durante un tiempo limitado."
     },
     {
-      "nombre": "Poción de regeneración",
+      "nombre": "Pociï¿½n de regeneraciï¿½n",
       "ingredientesRequeridos": [
         {
           "ingrediente": "Fruta de ojos",
@@ -54,7 +54,7 @@
           "cantidad": 1
         }
       ],
-      "efecto": "Restaura la salud gradualmente durante un período prolongado."
+      "efecto": "Restaura la salud gradualmente durante un perï¿½odo prolongado."
     }
   ]
 }
