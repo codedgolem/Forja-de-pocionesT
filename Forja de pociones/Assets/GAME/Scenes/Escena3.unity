@@ -868,8 +868,8 @@ MonoBehaviour:
   textoInventario: {fileID: 168828427}
   textoCaldero: {fileID: 871656416}
   menuDesplegable: {fileID: 1013100039}
-  panelErrores: {fileID: 0}
-  textoMensajeError: {fileID: 0}
+  panelErrores: {fileID: 466024820}
+  textoMensajeError: {fileID: 835711504}
   panelDeAlerta: {fileID: 932263068}
 --- !u!4 &216711512
 Transform:
