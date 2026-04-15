@@ -15407,10 +15407,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ControllerScene2
   spawner: {fileID: 111107356}
+  panel: {fileID: 2016439471}
   panelFin: {fileID: 1211195327}
   portal: {fileID: 81018670}
-  itemPrefab: {fileID: 8521624570753101307, guid: ed65b3d463123f64bbc478b4d9ba023b, type: 3}
-  contenedorUI: {fileID: 805447801}
+  totalHongo: {fileID: 41627583}
+  totalHojaSombra: {fileID: 762190594}
+  totalCalabaza: {fileID: 1090740017}
+  totalUva: {fileID: 179861911}
+  totalHojaBruja: {fileID: 1965187913}
+  totalSemillas: {fileID: 1957801109}
+  totalOjos: {fileID: 3215600}
+  conseguidoHongo: {fileID: 1048792078}
+  conseguidoHojaSombra: {fileID: 1486577044}
+  conseguidoCalabaza: {fileID: 138345326}
+  conseguidoUva: {fileID: 1365619397}
+  conseguidoHojaBruja: {fileID: 2107419260}
+  conseguidoSemillas: {fileID: 309321156}
+  conseguidoOjos: {fileID: 2125477143}
 --- !u!4 &1770317873
 Transform:
   m_ObjectHideFlags: 0
