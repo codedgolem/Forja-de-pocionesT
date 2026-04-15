@@ -3,94 +3,86 @@ using UnityEngine;
 
 public class ItemSpawner : MonoBehaviour
 {
-    [Header("Configuración")]
+    //private List<ingredientes> ingredientesList = GameDataLoader.instance.IngredientesList; 
     public List<ItemS> ItemS;
     public List<Transform> puntosAleatorios;
     public GameObject itemPrefab;
 
-    private List<int> usedIndex = new List<int>();
 
+    private List<int> usedIndex = new List<int>();
+    private int index = -1;
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
-        Invoke("SpawnItem", 0.5f);
+        SpawnItem();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
     }
 
     public void SpawnItem()
     {
-        if (puntosAleatorios.Count == 0) return;
-
-        foreach (var config in ItemS)
+        foreach (var item in ItemS)
         {
-            for (int i = 0; i < config.cantidad; i++)
+            for (int i = 0; i < item.cantidad; i++)
             {
-                SpawnItemEnPunto(config);
+                SpawnItemEnPunto(item);
             }
         }
     }
 
-    public void SpawnItemEnPunto(ItemS config)
+
+    public void SpawnItemEnPunto(ItemS item)
     {
-        if (usedIndex.Count >= puntosAleatorios.Count) return;
+        //Debug.Log(item);
+        //Debug.Log("Index lenght: "+usedIndex.Count);
+        //if (usedIndex.Count > 0)
+        //{
+        //    for (int i = 0; i < usedIndex.Count; i++)
+        //    {
+        //        if (usedIndex[i] == index)
+        //        {
+        //            index = Random.Range(0, ItemS.Count);
+        //            i = -1; // Reiniciar el bucle para verificar el nuevo índice
+        //                    //Debug.Log("Index cambiado desde el if: " + index);
+        //        }
+        //    }
+        //}
+        //else
+        //{
+        //    index = Random.Range(0, ItemS.Count);
+        //    //Debug.Log("Index desde el else: " + index);
+        //}
 
-        int index;
-        int intentos = 0; // Seguridad para evitar bucles infinitos
+        index = Random.Range(0, puntosAleatorios.Count);
 
-        do
+        while (usedIndex.Contains(index))
         {
             index = Random.Range(0, puntosAleatorios.Count);
-            intentos++;
-        } while (usedIndex.Contains(index) && intentos < 100);
+        }
 
-        if (usedIndex.Contains(index)) return; // Si no encontró punto libre, sale
 
-        usedIndex.Add(index);
+        // Debug.Log("Index final: " + index);
+
 
         GameObject newObj = Instantiate(itemPrefab, puntosAleatorios[index].position, Quaternion.identity);
-        ItemRecolectable recolectable = newObj.GetComponent<ItemRecolectable>();
+        usedIndex.Add(index); // Agregar el índice utilizado a la lista de índices usados
 
-        if (recolectable != null)
+        foreach (var ingrediente in GameDataLoader.Instance.IngredientesList)
         {
-            // Usamos 'Instance' (con I mayúscula) para conectar con el script de Esteban
-            if (GameDataLoader.Instance != null && GameDataLoader.Instance.IngredientesList != null)
+            if (ingrediente.nombre.Equals(item.nombre))
             {
-                ingredientes data = GameDataLoader.Instance.IngredientesList.Find(ing => ing.nombre == config.nombre);
+                newObj.GetComponent<ItemRecolectable>().objScript = ingrediente;
+                newObj.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("IngredientesIcon/" + ingrediente.iconId);
 
-                if (data != null)
-                {
-                    recolectable.objScript = data;
-
-                    // --- SOLUCIÓN AL ERROR DE LA LÍNEA 55 ---
-                    // Buscamos el componente SpriteRenderer con seguridad
-                    SpriteRenderer sRenderer = newObj.GetComponent<SpriteRenderer>();
-
-                    // Si no está en el padre, lo buscamos en los hijos (por si acaso)
-                    if (sRenderer == null) sRenderer = newObj.GetComponentInChildren<SpriteRenderer>();
-
-                    if (sRenderer != null)
-                    {
-                        // Cargamos el sprite usando el iconId que viene del JSON
-                        Sprite spriteIcono = Resources.Load<Sprite>("IngredientesIcon/" + data.iconId);
-                        if (spriteIcono != null)
-                        {
-                            sRenderer.sprite = spriteIcono;
-                        }
-                        else
-                        {
-                            Debug.LogWarning("No se encontró el sprite en Resources/IngredientesIcon/ para el ID: " + data.iconId);
-                        }
-                    }
-                    else
-                    {
-                        // Si llegamos aquí, el Prefab que pusiste en el Inspector no tiene forma de mostrar imagen
-                        Debug.LogError("¡ERROR! El prefab '" + itemPrefab.name + "' no tiene un SpriteRenderer.");
-                    }
-                }
-                else
-                {
-                    Debug.LogWarning("No se encontró la data en el JSON para el ingrediente: " + config.nombre);
-                }
+                //Debug.Log("Ruta: " + "IngredientesIcon/" + ingrediente.iconId);
+                break;
             }
         }
+
     }
 }

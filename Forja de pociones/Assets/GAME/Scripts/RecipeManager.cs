@@ -113,7 +113,7 @@ public class RecipeManager : MonoBehaviour
 
         foreach (var key in GameManager.Instance.CollectedItems.Keys)
         {
-            if (key.nombre == seleccionado) data = key;
+            if (key.nombre.Equals(seleccionado)) data = key;
         }
 
         if (data != null && GameManager.Instance.CollectedItems[data] > 0)
