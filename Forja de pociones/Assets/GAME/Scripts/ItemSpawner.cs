@@ -4,7 +4,7 @@ using UnityEngine;
 public class ItemSpawner : MonoBehaviour
 {
     [Header("Configuración")]
-    public List<ItemS> ItemS; // Esta es la lista de estructuras que definimos en Ingrediente.cs
+    public List<ItemS> ItemS;
     public List<Transform> puntosAleatorios;
     public GameObject itemPrefab;
 
@@ -12,7 +12,7 @@ public class ItemSpawner : MonoBehaviour
 
     void Start()
     {
-        // Un pequeño delay para asegurar que el GameDataLoader ya leyó el JSON
+        
         Invoke("SpawnItem", 0.5f);
     }
 

@@ -6,13 +6,17 @@ using System.IO;
 public class RecipeManager : MonoBehaviour
 {
     [Header("Configuración del Archivo")]
-    public string nombreArchivoJson = "DatosJuego.json"; // Asegúrate que este nombre sea igual al de tu amiga
+    public string nombreArchivoJson = "ingredientesData.json"; 
 
     [Header("Referencias UI")]
     public TextMeshProUGUI textoReceta;
     public TextMeshProUGUI textoInventario;
     public TextMeshProUGUI textoCaldero;
     public TMP_Dropdown menuDesplegable;
+
+    [Header ("Panel Errores")]
+    public GameObject panelErrores;
+    public TextMeshProUGUI textoMensajeError;
 
     [Header("Ventana de Victoria")]
     public GameObject panelDeAlerta;
@@ -127,9 +131,14 @@ public class RecipeManager : MonoBehaviour
     {
         foreach (var item in ingredientesCaldero)
         {
-            foreach (var key in GameManager.Instance.CollectedItems.Keys)
+            
+            foreach (var key in new List<ingredientes>(GameManager.Instance.CollectedItems.Keys)) // Envolvemos key en una lista para evitar errores al modificar los valores
             {
-                if (key.nombre == item.Key) GameManager.Instance.CollectedItems[key] += item.Value;
+                
+                if (key != null && key.nombre == item.Key) //Se verifica que key no sea nulo antes de intentar leer su nombre
+                {
+                    GameManager.Instance.CollectedItems[key] += item.Value;
+                }
             }
         }
         ingredientesCaldero.Clear();
@@ -143,7 +152,7 @@ public class RecipeManager : MonoBehaviour
 
         RecetaJSON receta = misDatos.recetas[indiceRecetaActual];
 
-        // 1. Validar que no haya ingredientes que NO pertenecen a la receta
+        // Mal ingrediente
         foreach (var item in ingredientesCaldero)
         {
             bool esDeReceta = false;
@@ -151,23 +160,42 @@ public class RecipeManager : MonoBehaviour
             {
                 if (item.Key == req.nombre) esDeReceta = true;
             }
-            if (!esDeReceta) return; // Si hay algo extra, no se prepara
+            if (!esDeReceta)
+            {
+                MostrarError("Ingrediente incorrecto: " + item.Key);
+                return;
+            }
         }
 
-        // 2. Validar que las cantidades sean EXACTAS
+        //Ingredientes faltantes o incompletos
         foreach (var req in receta.ingredientesRequeridos)
         {
             int enOlla = ingredientesCaldero.ContainsKey(req.nombre) ? ingredientesCaldero[req.nombre] : 0;
-            if (enOlla != req.cantidad) return; // Si falta o sobra, no se prepara
+
+            if (enOlla == 0)
+            {
+                MostrarError("Falta ingrediente: " + req.nombre);
+                return;
+            }
+            if (enOlla < req.cantidad)
+            {
+                MostrarError("Cantidad incompleta de: " + req.nombre);
+                return;
+            }
+            if (enOlla > req.cantidad)
+            {
+                MostrarError("Demasiada cantidad de: " + req.nombre);
+                return;
+            }
         }
 
-        // ÉXITO: Limpiamos caldero y pasamos a la siguiente poción
+        // ÉXITO
+        if (panelErrores != null) panelErrores.SetActive(false);
         ingredientesCaldero.Clear();
         indiceRecetaActual++;
 
         if (indiceRecetaActual >= misDatos.recetas.Count)
         {
-            textoReceta.text = "¡Victoria!";
             if (panelDeAlerta != null) panelDeAlerta.SetActive(true);
         }
         else
@@ -177,5 +205,19 @@ public class RecipeManager : MonoBehaviour
         }
     }
 
-    public void BotonInicio() { GameManager.Instance.LoadScene("Escena 1"); }
+    private void MostrarError(string mensaje)
+    {
+        if (panelErrores != null && textoMensajeError != null)
+        {
+            textoMensajeError.text = mensaje;
+            panelErrores.SetActive(true);
+        }
+    }
+
+    public void CerrarPanelError()
+    {
+        if (panelErrores != null) panelErrores.SetActive(false);
+    }
+
+    public void BotonInicio() { GameManager.Instance.LoadScene("Escena1"); }
 }

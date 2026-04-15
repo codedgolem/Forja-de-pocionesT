@@ -79,7 +79,7 @@
       "ingredientesRequeridos": [
         {
           "nombre": "Hoja de Sombra",
-          "cantidad": 4
+          "cantidad": 2
         },
         {
           "nombre": "Fruta de ojos",
@@ -98,15 +98,15 @@
       "ingredientesRequeridos": [
         {
           "nombre": "Semillas de gigante",
-          "cantidad": 5
-        },
-        {
-          "nombre": "Uva",
           "cantidad": 3
         },
         {
+          "nombre": "Uva",
+          "cantidad": 1
+        },
+        {
           "nombre": "Hoja de bruja",
-          "cantidad": 2
+          "cantidad": 1
         },
         {
           "nombre": "Hongo Brillante",
@@ -121,15 +121,15 @@
       "ingredientesRequeridos": [
         {
           "nombre": "Fruta de ojos",
-          "cantidad": 6
+          "cantidad": 1
         },
         {
           "nombre": "Hoja de Sombra",
-          "cantidad": 4
+          "cantidad": 3
         },
         {
           "nombre": "Hoja de bruja",
-          "cantidad": 3
+          "cantidad": 1
         },
         {
           "nombre": "Calabaza",

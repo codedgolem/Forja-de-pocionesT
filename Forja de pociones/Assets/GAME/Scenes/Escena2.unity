@@ -1106,19 +1106,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemSpawner
   ItemS:
   - nombre: Hongo Brillante
-    cantidad: 2
+    cantidad: 5
   - nombre: Uva
-    cantidad: 2
+    cantidad: 6
   - nombre: Calabaza
-    cantidad: 1
+    cantidad: 4
   - nombre: Hoja de bruja
-    cantidad: 2
+    cantidad: 5
   - nombre: Semillas de gigante
-    cantidad: 1
+    cantidad: 5
   - nombre: Hoja de Sombra
-    cantidad: 1
+    cantidad: 5
   - nombre: Fruta de ojos
-    cantidad: 1
+    cantidad: 4
   puntosAleatorios:
   - {fileID: 2062497377}
   - {fileID: 700869603}
@@ -1137,6 +1137,38 @@ MonoBehaviour:
   - {fileID: 992226056}
   - {fileID: 1920844523}
   - {fileID: 1246697346}
+  - {fileID: 994492105}
+  - {fileID: 994492105}
+  - {fileID: 994492105}
+  - {fileID: 994492105}
+  - {fileID: 994492105}
+  - {fileID: 994492105}
+  - {fileID: 994492105}
+  - {fileID: 994492105}
+  - {fileID: 994492105}
+  - {fileID: 994492105}
+  - {fileID: 994492105}
+  - {fileID: 994492105}
+  - {fileID: 994492105}
+  - {fileID: 994492105}
+  - {fileID: 994492105}
+  - {fileID: 994492105}
+  - {fileID: 994492105}
+  - {fileID: 994492105}
+  - {fileID: 994492105}
+  - {fileID: 994492105}
+  - {fileID: 994492105}
+  - {fileID: 994492105}
+  - {fileID: 994492105}
+  - {fileID: 994492105}
+  - {fileID: 994492105}
+  - {fileID: 994492105}
+  - {fileID: 994492105}
+  - {fileID: 994492105}
+  - {fileID: 994492105}
+  - {fileID: 994492105}
+  - {fileID: 994492105}
+  - {fileID: 994492105}
   - {fileID: 994492105}
   itemPrefab: {fileID: 8521624570753101307, guid: ed65b3d463123f64bbc478b4d9ba023b, type: 3}
 --- !u!4 &111107357
